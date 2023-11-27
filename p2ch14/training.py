@@ -15,16 +15,30 @@ import torch.nn as nn
 from torch.optim import SGD, Adam
 from torch.utils.data import DataLoader
 
-import p2ch14.dsets
-import p2ch14.model
 
+
+
+
+#leo add for not finding  当Python解释器在运行过程中遇到一个​​import​​语句时，它会在特定的位置查找该模块。
+# # 默认情况下，Python会在系统的标准库路径下寻找模块。如果你的模块不在标准库路径下，你需要确保模块所在的路径被正确地添加到Python的搜索路径中。 
+# # 你可以使用​​sys.path​​来查看Python的搜索路径。如果你的模块在一个非标准库的路径下，你可以通过以下两种方式将该路径添加到搜索路径中：
+#print("sys path is: %s", sys.path)
+import sys
+sys.path.append('d:\\deep-learning-with-pytorch2-leo')
+#print("sys path is: %s", sys.path)
 from util.util import enumerateWithEstimate
 from util.logconf import logging
+
+# leo modify for debug
+#import p2ch14.dsets
+#import p2ch14.model
+import p2ch14.dsets
+import p2ch14.model
 
 
 log = logging.getLogger(__name__)
 # log.setLevel(logging.WARN)
-log.setLevel(logging.INFO)
+#log.setLevel(logging.INFO)
 log.setLevel(logging.DEBUG)
 
 # Used for computeBatchLoss and logMetrics to index into metrics_t/metrics_a
@@ -33,6 +47,11 @@ METRICS_PRED_NDX=1
 METRICS_PRED_P_NDX=2
 METRICS_LOSS_NDX=3
 METRICS_SIZE = 4
+
+
+#leo , how to run 
+# (py39-torch1.13.1) PS D:\deep-learning-with-pytorch2-leo> python -m p2ch14.training --malignant --dataset MalignantLunaDataset --finetune data/part2/models/cls_2020-02-06_14.16.55_final-nodule-nonnodule.best.state --finetune-depth 2 --epochs 3 malben-finetune-twolayer
+
 
 class ClassificationTrainingApp:
     def __init__(self, sys_argv=None):
@@ -109,8 +128,11 @@ class ClassificationTrainingApp:
         # if self.cli_args.augmented or self.cli_args.augment_noise:
             self.augmentation_dict['noise'] = 25.0
 
-        self.use_cuda = torch.cuda.is_available()
-        self.device = torch.device("cuda" if self.use_cuda else "cpu")
+        # leo modify. run on cpu
+        #self.use_cuda = torch.cuda.is_available()
+        #self.device = torch.device("cuda" if self.use_cuda else "cpu")
+        self.use_cuda = False
+        self.device = torch.device("cpu")
 
         self.model = self.initModel()
         self.optimizer = self.initOptimizer()
