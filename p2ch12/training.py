@@ -5,6 +5,8 @@ import sys
 
 import numpy as np
 
+
+
 from torch.utils.tensorboard import SummaryWriter
 
 import torch
@@ -12,10 +14,19 @@ import torch.nn as nn
 from torch.optim import SGD
 from torch.utils.data import DataLoader
 
-from util.util import enumerateWithEstimate
 from .dsets import LunaDataset
-from util.logconf import logging
 from .model import LunaModel
+
+#leo add for not finding  当Python解释器在运行过程中遇到一个​​import​​语句时，它会在特定的位置查找该模块。
+# # 默认情况下，Python会在系统的标准库路径下寻找模块。如果你的模块不在标准库路径下，你需要确保模块所在的路径被正确地添加到Python的搜索路径中。 
+# # 你可以使用​​sys.path​​来查看Python的搜索路径。如果你的模块在一个非标准库的路径下，你可以通过以下两种方式将该路径添加到搜索路径中：
+#print("sys path is: %s", sys.path)
+import sys
+sys.path.append('d:\\deep-learning-with-pytorch2-leo')
+#print("sys path is: %s", sys.path)
+from util.util import enumerateWithEstimate
+from util.logconf import logging
+
 
 log = logging.getLogger(__name__)
 # log.setLevel(logging.WARN)
@@ -114,8 +125,12 @@ class LunaTrainingApp:
         if self.cli_args.augmented or self.cli_args.augment_noise:
             self.augmentation_dict['noise'] = 25.0
 
-        self.use_cuda = torch.cuda.is_available()
-        self.device = torch.device("cuda" if self.use_cuda else "cpu")
+        # leo modify to cpu
+        #self.use_cuda = torch.cuda.is_available()
+        # leo modify to cpu
+        #self.device = torch.device("cuda" if self.use_cuda else "cpu")
+        self.use_cuda = False
+        self.device = torch.device("cpu")
 
         self.model = self.initModel()
         self.optimizer = self.initOptimizer()

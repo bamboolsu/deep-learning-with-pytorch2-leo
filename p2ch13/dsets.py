@@ -17,6 +17,12 @@ import torch.cuda
 import torch.nn.functional as F
 from torch.utils.data import Dataset
 
+#leo add for not finding  当Python解释器在运行过程中遇到一个​​import​​语句时，它会在特定的位置查找该模块。
+# # 默认情况下，Python会在系统的标准库路径下寻找模块。如果你的模块不在标准库路径下，你需要确保模块所在的路径被正确地添加到Python的搜索路径中。 
+# # 你可以使用​​sys.path​​来查看Python的搜索路径。如果你的模块在一个非标准库的路径下，你可以通过以下两种方式将该路径添加到搜索路径中：
+#print("sys path is: %s", sys.path)
+import sys
+sys.path.append('d:\\deep-learning-with-pytorch2-leo')
 from util.disk import getCache
 from util.util import XyzTuple, xyz2irc
 from util.logconf import logging
@@ -125,7 +131,8 @@ class Ct:
                                  .nonzero()[0].tolist())
 
     def buildAnnotationMask(self, positiveInfo_list, threshold_hu = -700):
-        boundingBox_a = np.zeros_like(self.hu_a, dtype=np.bool)
+        #leo modify form np.bool to np.bool_
+        boundingBox_a = np.zeros_like(self.hu_a, dtype=np.bool_)
 
         for candidateInfo_tup in positiveInfo_list:
             center_irc = xyz2irc(
